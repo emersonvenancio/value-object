@@ -10,7 +10,7 @@ public class Fast {
 
 	private int[] x;
 	private int[] y;
-	private int freeIndex = -1;
+	private int freeIndex;
 	private int pointer = -1;
 
 	public Fast() {
@@ -23,12 +23,12 @@ public class Fast {
 	}
 
 	public int add(int x, int y) {
-		if (this.x.length -1 == freeIndex) {
+		if (this.x.length <= freeIndex) {
 			grow();
 		}
-		this.x[++freeIndex] = x;
+		this.x[freeIndex] = x;
 		this.y[freeIndex] = y;
-		return freeIndex;
+		return freeIndex++;
 	}
 
 	public int getX() {
@@ -53,8 +53,8 @@ public class Fast {
 	}
 
 	public boolean next() {
+		pointer++;
 		if (pointer < freeIndex) {
-			pointer++;
 			return true;
 		}
 		return false;

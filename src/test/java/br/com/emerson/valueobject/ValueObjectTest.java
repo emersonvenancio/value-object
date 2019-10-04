@@ -11,24 +11,24 @@ public class ValueObjectTest {
 
 	@Test
 	public void testApp() {
-		List<Long> slowAlocation = new ArrayList<Long>();
-		List<Long> fastAlocation = new ArrayList<Long>();
+		List<Long> slowAllocation = new ArrayList<Long>();
+		List<Long> fastAllocation = new ArrayList<Long>();
 		List<Long> slowIteration = new ArrayList<Long>();
 		List<Long> fastIteration = new ArrayList<Long>();
-		for (int x = 0; x < 300; x++) {
-			slowIterator(slowIteration,  slowAlocation(slowAlocation));
+		for (int x = 0; x < 200; x++) {
+			slowIterator(slowIteration,  slowAllocation(slowAllocation));
 			System.gc();
 
-			fastIterator( fastIteration, fastAlocation(fastAlocation));
+			fastIterator( fastIteration, fastAllocation(fastAllocation));
 			System.gc();
 		}
-		double slowAlocationAvg = slowAlocation.stream().mapToLong(l -> l)//
+		double slowAllocationAvg = slowAllocation.stream().mapToLong(l -> l)//
 				.average().getAsDouble();
-		double fastAlocationAvg = fastAlocation.stream().mapToLong(l -> l)//
+		double fastAllocationAvg = fastAllocation.stream().mapToLong(l -> l)//
 				.average().getAsDouble();
-		System.out.println("Slow Alocation: " + slowAlocationAvg + " Fast Alocation: " + fastAlocationAvg+" = "+(slowAlocationAvg / fastAlocationAvg));
+		System.out.println("Slow Allocation: " + slowAllocationAvg + " Fast Allocation: " + fastAllocationAvg+" = "+(slowAllocationAvg / fastAllocationAvg));
 
-		Assert.assertTrue((slowAlocationAvg / fastAlocationAvg) > 2.8);
+		Assert.assertTrue((slowAllocationAvg / fastAllocationAvg) > 2.0);
 		
 		double slowIteratorAvg = slowIteration.stream().mapToLong(l -> l)//
 				.average().getAsDouble();
@@ -37,12 +37,12 @@ public class ValueObjectTest {
 
 		System.out.println("Slow Iterator: " + slowIteratorAvg + " Fast Iterator: " + fastIteratorAvg+" = "+(slowIteratorAvg / fastIteratorAvg));
 
-		Assert.assertTrue((slowIteratorAvg / fastIteratorAvg) > 1.3);
+		Assert.assertTrue((slowIteratorAvg / fastIteratorAvg) > 3.0);
 	}
 
-	private Fast fastAlocation(List<Long> fastTimes) {
+	private Fast fastAllocation(List<Long> fastTimes) {
 		long init = System.nanoTime();
-		Fast f = new Fast();
+		Fast f = new Fast(INT);
 		for (int i = 0; i < INT; i++) {
 			f.add(i, i);
 		}
@@ -59,9 +59,9 @@ public class ValueObjectTest {
 		fastIteration.add(System.nanoTime() - init);
 	}
 
-	private ArrayList<Slow> slowAlocation(List<Long> slowTimes) {
+	private ArrayList<Slow> slowAllocation(List<Long> slowTimes) {
 		long init = System.nanoTime();
-		ArrayList<Slow> list = new ArrayList<Slow>();
+		ArrayList<Slow> list = new ArrayList<Slow>(INT);
 		for (int i = 0; i < INT; i++) {
 			list.add(new Slow(i, i));
 		}
