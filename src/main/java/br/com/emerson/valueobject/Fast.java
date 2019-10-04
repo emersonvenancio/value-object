@@ -1,7 +1,11 @@
 package br.com.emerson.valueobject;
 
 import java.util.Arrays;
-
+/**
+ * 
+ * @author emers
+ *
+ */
 public class Fast {
 
 	private int[] x;
